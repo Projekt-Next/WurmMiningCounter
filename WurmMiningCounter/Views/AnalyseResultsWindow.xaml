@@ -17,9 +17,9 @@
         <Grid Margin="20">
             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="3*"/><RowDefinition Height="2*"/></Grid.RowDefinitions>
             <WrapPanel Margin="0,0,0,12" VerticalAlignment="Center">
-                <StackPanel Orientation="Horizontal" Margin="0,0,20,4"><TextBlock Text="Postać:" VerticalAlignment="Center" Margin="0,0,8,0"/><ComboBox x:Name="ProfileSelector" Width="180" DisplayMemberPath="Name" SelectionChanged="OnProfileSelectionChanged"/></StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,20,4"><TextBlock Text="Materiał:" VerticalAlignment="Center" Margin="0,0,6,0"/><Border Background="#FFE5EFFD" BorderBrush="#FF9DBBE7" BorderThickness="1" CornerRadius="4" Padding="9,4"><TextBlock x:Name="InputText" FontWeight="Bold" VerticalAlignment="Center"/></Border></StackPanel>
-                <TextBlock x:Name="FinishTimeText" Text="Ostatnia analiza: czas niedostępny" Foreground="#FF536B8C" VerticalAlignment="Center" Margin="0,0,0,4"/>
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,4"><TextBlock Text="Character:" VerticalAlignment="Center" Margin="0,0,8,0"/><ComboBox x:Name="ProfileSelector" Width="180" DisplayMemberPath="Name" SelectionChanged="OnProfileSelectionChanged"/></StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,4"><TextBlock Text="Material:" VerticalAlignment="Center" Margin="0,0,6,0"/><Border Background="#FFE5EFFD" BorderBrush="#FF9DBBE7" BorderThickness="1" CornerRadius="4" Padding="9,4"><TextBlock x:Name="InputText" FontWeight="Bold" VerticalAlignment="Center"/></Border></StackPanel>
+                <TextBlock x:Name="FinishTimeText" Text="Last analysis: time unavailable" Foreground="#FF536B8C" VerticalAlignment="Center" Margin="0,0,0,4"/>
                 <TextBlock x:Name="ProfileText" Visibility="Collapsed"/>
             </WrapPanel>
             <Grid Grid.Row="1">
@@ -60,17 +60,17 @@
                             <TextBlock Grid.Row="2" Text="SW"/><TextBlock Grid.Row="2" Grid.Column="1" Text="S" HorizontalAlignment="Center"/><TextBlock Grid.Row="2" Grid.Column="2" Text="SE"/>
                         </Grid>
                         <StackPanel Grid.Row="1" Margin="0,8,0,0">
-                            <TextBlock Text="Odległość od miejsca wydobycia" FontSize="12" FontWeight="SemiBold" Foreground="#FF536B8C" TextWrapping="Wrap"/>
+                            <TextBlock Text="Distance from mining location" FontSize="12" FontWeight="SemiBold" Foreground="#FF536B8C" TextWrapping="Wrap"/>
                             <TextBlock x:Name="LegendText" Text="1 Trace · 2 Slight · 3 Faint · 4 Minuscule · 5 Vague · 6 Indistinct" FontSize="12" TextWrapping="Wrap" FontWeight="Normal" Foreground="#FF536B8C"/>
                         </StackPanel>
-                        <TextBlock x:Name="MapNoteText" Grid.Row="2" Text="Pozycje orientacyjne — mapa nie wskazuje dokładnego pola złoża." FontSize="12" TextWrapping="Wrap" FontWeight="Normal" Foreground="#FF536B8C" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="MapNoteText" Grid.Row="2" Text="Approximate positions; the map does not show the exact vein tile." FontSize="12" TextWrapping="Wrap" FontWeight="Normal" Foreground="#FF536B8C" Margin="0,4,0,0"/>
                     </Grid>
                 </GroupBox>
             </Grid>
-            <GroupBox Grid.Row="2" x:Name="EntriesSection" Header="Przebieg analizy" Margin="0,12,0,0" Padding="10,10,1,10">
+            <GroupBox Grid.Row="2" x:Name="EntriesSection" Header="Analysis details" Margin="0,12,0,0" Padding="10,10,1,10">
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-                    <TextBlock Text="Pokazano rozpoznane informacje z logu. Nieobsługiwane komunikaty mogą zostać pominięte." FontSize="12" Foreground="#FF536B8C" FontWeight="Normal" TextWrapping="Wrap" Margin="0,0,6,8"/>
+                    <TextBlock Text="Recognized log information is shown. Unsupported messages may be omitted." FontSize="12" Foreground="#FF536B8C" FontWeight="Normal" TextWrapping="Wrap" Margin="0,0,6,8"/>
                     <ScrollViewer Grid.Row="1" x:Name="EntriesScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <ScrollViewer.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource AnalyseScrollBar}"/></ScrollViewer.Resources>
                         <ItemsControl x:Name="EntriesList" Margin="0,0,4,0"><ItemsControl.ItemTemplate><DataTemplate>

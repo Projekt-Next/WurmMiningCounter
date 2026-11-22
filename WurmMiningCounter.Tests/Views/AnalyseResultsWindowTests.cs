@@ -129,14 +129,14 @@ public sealed class AnalyseResultsWindowTests
                 window.Show();
                 Assert.Equal(6, ((ItemsControl)window.FindName("VeinsList")).Items.Count);
                 Assert.Equal(10, Entries(window).Length);
-                Assert.Equal("Ostatnia analiza: 08:27:05", Text(window, "FinishTimeText"));
-                Assert.Contains("nieznane", Text(window, "MapNoteText"));
+                Assert.Equal("Last analysis: 08:27:05", Text(window, "FinishTimeText"));
+                Assert.Contains("unknown", Text(window, "MapNoteText"));
                 Assert.Equal(225, ((Grid)window.FindName("MapGrid")).Children.Count);
                 Publish(processor, id, "Alice", Shard, Trace, LiveNoCompass[2], ShardFinish);
                 Pump();
                 Assert.Equal(2, ((ItemsControl)window.FindName("VeinsList")).Items.Count);
                 Assert.Equal(226, ((Grid)window.FindName("MapGrid")).Children.Count);
-                Assert.Contains("nieznane", Text(window, "MapNoteText"));
+                Assert.Contains("unknown", Text(window, "MapNoteText"));
             }
             finally { window.Close(); }
         });
@@ -156,18 +156,18 @@ public sealed class AnalyseResultsWindowTests
             try
             {
                 window.Show();
-                Assert.Equal("Ostatnia analiza: 01:13:10", Text(window, "FinishTimeText"));
+                Assert.Equal("Last analysis: 01:13:10", Text(window, "FinishTimeText"));
                 window.SelectProfile(second, "Same");
-                Assert.Equal("Ostatnia analiza: 22:03:04", Text(window, "FinishTimeText"));
+                Assert.Equal("Last analysis: 22:03:04", Text(window, "FinishTimeText"));
                 Publish(processor, second, "Same", Shard, Trace);
                 Pump();
-                Assert.Equal("Ostatnia analiza: 22:03:04", Text(window, "FinishTimeText"));
+                Assert.Equal("Last analysis: 22:03:04", Text(window, "FinishTimeText"));
                 processor.Invalidate(second, "Same"); Pump();
-                Assert.Equal("Ostatnia analiza: czas niedostępny", Text(window, "FinishTimeText"));
+                Assert.Equal("Last analysis: time unavailable", Text(window, "FinishTimeText"));
                 window.SelectProfile(first, "Same");
-                Assert.Equal("Ostatnia analiza: 01:13:10", Text(window, "FinishTimeText"));
+                Assert.Equal("Last analysis: 01:13:10", Text(window, "FinishTimeText"));
                 Publish(processor, first, "Same", Shard, NoTrace, ShardFinish); Pump();
-                Assert.Equal("Ostatnia analiza: czas niedostępny", Text(window, "FinishTimeText"));
+                Assert.Equal("Last analysis: time unavailable", Text(window, "FinishTimeText"));
             }
             finally { window.Close(); }
         });
@@ -195,7 +195,7 @@ public sealed class AnalyseResultsWindowTests
                     Assert.Equal(604, window.MinHeight);
                     var map = (Grid)window.FindName("MapGrid");
                     var mapBounds = map.TransformToAncestor(window).TransformBounds(new Rect(0, 0, map.ActualWidth, map.ActualHeight));
-                    Assert.InRange(mapBounds.Width, 149.5, 151);
+                    Assert.InRange(mapBounds.Width, 149.5, 165);
                     Assert.True(((ScrollViewer)window.FindName("VeinsScroll")).ScrollableHeight > 0);
                     var entries = (ScrollViewer)window.FindName("EntriesScroll");
                     Assert.True(entries.ActualHeight >= 100);

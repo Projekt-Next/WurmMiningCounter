@@ -67,15 +67,15 @@ public partial class AnalyseResultsWindow : Window
         finally { _updatingProfiles = false; }
         ProfileText.Text = snapshot?.ProfileName ?? _profileName ?? string.Empty;
         InputText.Text = snapshot is null ? string.Empty : snapshot.Result.Input.ToString();
-        FinishTimeText.Text = $"Ostatnia analiza: {snapshot?.Result.FinishTime ?? "czas niedostępny"}";
+        FinishTimeText.Text = $"Last analysis: {snapshot?.Result.FinishTime ?? "time unavailable"}";
         EmptyText.Visibility = snapshot is null ? Visibility.Visible : Visibility.Collapsed;
         EntriesList.ItemsSource = snapshot?.Result.Entries.Select(FormatEntry).ToArray();
         var traces = snapshot?.Result.Entries.Select(entry => entry.Trace).OfType<AnalyseTrace>().ToArray() ?? [];
         var observations = traces.Select((trace, index) => new VeinDisplay(trace, ObservationColor(index))).ToArray();
         VeinsList.ItemsSource = observations;
         MapNoteText.Text = observations.Any(item => item.Trace.Direction is null)
-            ? "Pozycje złóż bez kierunku są nieznane. Pozostałe pozycje są orientacyjne."
-            : "Pozycje orientacyjne — mapa nie wskazuje dokładnego pola złoża.";
+            ? "Vein positions without a direction are unknown. Other positions are approximate."
+            : "Approximate positions; the map does not show the exact vein tile.";
         DrawMap(observations);
     }
 

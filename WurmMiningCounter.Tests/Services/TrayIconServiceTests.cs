@@ -175,7 +175,7 @@ public sealed class TrayIconServiceTests
                 Assert.False(main.IsVisible);
                 Assert.Equal(Visibility.Visible, ((System.Windows.Controls.TextBlock)window.FindName("EmptyText")).Visibility);
                 Assert.Empty(((System.Windows.Controls.ItemsControl)window.FindName("VeinsList")).Items);
-                Assert.Equal("Ostatnia analiza: czas niedostępny", ((System.Windows.Controls.TextBlock)window.FindName("FinishTimeText")).Text);
+                Assert.Equal("Last analysis: time unavailable", ((System.Windows.Controls.TextBlock)window.FindName("FinishTimeText")).Text);
                 item.PerformClick(); PumpDispatcher();
                 Assert.Same(window, Assert.Single(main.OwnedWindows.OfType<AnalyseResultsWindow>()));
 

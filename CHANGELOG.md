@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Use English consistently in the Analyse results window.
+
 ### Privacy
 
 - Anonymize real profile names in documentation and tests, and ignore dated Wurm channel logs and common local secret files.
