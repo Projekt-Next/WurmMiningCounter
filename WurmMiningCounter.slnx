@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="WurmMiningCounter/WurmMiningCounter.csproj" />
+  <Project Path="WurmMiningCounter.Tests/WurmMiningCounter.Tests.csproj" />
+</Solution>

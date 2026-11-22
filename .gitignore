@@ -1,0 +1,39 @@
+# Visual Studio user and workspace files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET and WPF build output
+**/[Bb]in/
+**/[Oo]bj/
+TestResults/
+
+# Local application data and release assets
+settings.json
+Release/
+artifacts/live-diagnostic/
+
+# Dated Wurm channel logs (including channels beyond Event and Skills)
+_Event.[0-9][0-9][0-9][0-9]-[0-9][0-9]*.txt
+_Skills.[0-9][0-9][0-9][0-9]-[0-9][0-9]*.txt
+**/logs/_[!.]*.[0-9][0-9][0-9][0-9]-[0-9][0-9]*.txt
+
+# Local secrets
+.env
+.env.*
+!.env.example
+credentials.json
+
+# Temporary and diagnostic files
+*.tmp
+*.temp
+*.bak
+*.log
+*.cache
+*.pidb
+*.svclog
+*.sdf
+*.db
+*.opendb

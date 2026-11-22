@@ -1,0 +1,143 @@
+<Window x:Class="WurmMiningCounter.Views.ResetWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Reset"
+        WindowStyle="None"
+        Width="330"
+        MinWidth="320"
+        MinHeight="220"
+        MaxHeight="620"
+        SizeToContent="Height"
+        WindowStartupLocation="Manual"
+        ResizeMode="CanResize"
+        Background="White">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Background="Transparent"
+              MouseLeftButtonDown="OnHeaderMouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Reset"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center" />
+            <Button x:Name="CloseButton"
+                    Grid.Column="1"
+                    Width="22"
+                    Height="20"
+                    Margin="8,0,0,0"
+                    Padding="0"
+                    BorderThickness="0"
+                    Content="×"
+                    FontSize="14"
+                    Click="OnCloseButtonClick">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="#FF5F6368" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFF0F1F3" />
+                                <Setter Property="Foreground" Value="#FF3C4043" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Margin="0,14,0,10">
+            <CheckBox Content="Reset Session"
+                      FontWeight="SemiBold"
+                      IsChecked="{Binding ResetSession, Mode=TwoWay}" />
+            <TextBlock Margin="24,3,0,0"
+                       Foreground="#FF5F6368"
+                       Text="Global reset of all profiles. This is the only reset that clears Total."
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2"
+                      MaxHeight="420"
+                      VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding ProfileOptions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,10"
+                                Padding="10"
+                                Background="#FFF7F8FA"
+                                BorderBrush="#FFD5DBE1"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                            <StackPanel>
+                                <TextBlock Text="{Binding ProfileName}" FontWeight="SemiBold" />
+                                <CheckBox Margin="0,7,0,0"
+                                          Content="Reset All Material Counters"
+                                          IsChecked="{Binding ResetMaterialCounters, Mode=TwoWay}"
+                                          IsEnabled="{Binding IsMaterialCountersResetEnabled}" />
+                                <StackPanel Margin="0,9,0,0">
+                                    <TextBlock Text="Material Counters"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               Foreground="#FF5F6368" />
+                                    <ItemsControl Margin="0,4,0,0"
+                                                  ItemsSource="{Binding MaterialOptions}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,1,0,1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox Content="{Binding DisplayName}"
+                                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                              IsEnabled="{Binding DataContext.IsSelectiveMaterialResetEnabled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+                                                    <TextBlock Grid.Column="1"
+                                                               Margin="12,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="#FF5F6368"
+                                                               Text="{Binding Count}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Button Margin="0,5,0,0"
+                                            Padding="6,2"
+                                            HorizontalAlignment="Left"
+                                            Content="{Binding SelectAllMaterialsText}"
+                                            IsEnabled="{Binding IsSelectiveMaterialResetEnabled}"
+                                            Click="OnSelectAllMaterialsClick" />
+                                </StackPanel>
+                                <CheckBox Margin="0,4,0,0"
+                                          Content="Reset Vein Context"
+                                          IsChecked="{Binding ResetVeinContext, Mode=TwoWay}"
+                                          IsEnabled="{Binding IsVeinContextResetEnabled}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="3"
+                    Margin="0,14,0,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Width="78" Content="Cancel" IsCancel="True" />
+            <Button Width="78"
+                    Margin="8,0,0,0"
+                    Content="Reset"
+                    IsDefault="True"
+                    IsEnabled="{Binding CanReset}"
+                    Click="OnResetClick" />
+        </StackPanel>
+    </Grid>
+</Window>

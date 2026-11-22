@@ -1,0 +1,200 @@
+<Window x:Class="WurmMiningCounter.Views.LogLocationsManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="White"
+        Width="800" Height="650"
+        MinWidth="620" MinHeight="480"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" MouseLeftButtonDown="OnHeaderMouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock FontSize="18" FontWeight="SemiBold" Text="Log Locations Manager" />
+                <TextBlock Margin="0,3,0,0" Foreground="#FF5F6368"
+                           Text="Review configured Wurm log folders and run a one-time discovery scan." />
+            </StackPanel>
+            <Button Grid.Column="1" Width="22" Height="20" Margin="8,0,0,0" Padding="0"
+                    BorderThickness="0" Background="Transparent" Foreground="#FF5F6368"
+                    Content="&#x00D7;" FontSize="14" Click="OnCloseButtonClick" />
+        </Grid>
+        <ScrollViewer Grid.Row="1" Margin="0,16,0,0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Header="Known locations" Padding="12"
+                              Background="#FFF7F8FA" BorderBrush="#FFD5DBE1" BorderThickness="1"
+                              FontWeight="SemiBold">
+                        <ItemsControl ItemsSource="{Binding KnownLogLocations}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,0,0,10" TextElement.FontWeight="Normal">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" FontWeight="SemiBold" Text="{Binding DisplayName}" />
+                                            <TextBlock Grid.Column="1" Margin="8,0,0,0" Foreground="#FF5F6368"
+                                                       Text="{Binding DiscoveryStatus}" HorizontalAlignment="Right" />
+                                        </Grid>
+                                        <ItemsControl Margin="0,3,0,0" ItemsSource="{Binding DetectedPlayersDirectories}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Foreground="#FF5F6368" FontSize="11"
+                                                               Text="{Binding}" TextTrimming="CharacterEllipsis"
+                                                               ToolTip="{Binding}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock Margin="0,3,0,0" Foreground="#FF5F6368" FontSize="11"
+                                                   Text="{Binding RuleDescription}" TextWrapping="Wrap">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasDetectedPlayersDirectories}" Value="False">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+                    <GroupBox Grid.Column="2" Header="Additional folders" Padding="12"
+                              Background="#FFF7F8FA" BorderBrush="#FFD5DBE1" BorderThickness="1"
+                              FontWeight="SemiBold">
+                        <StackPanel TextElement.FontWeight="Normal">
+                            <ListBox x:Name="AdditionalFoldersList"
+                                     ItemsSource="{Binding AdditionalWurmDataLocations}"
+                                     SelectedItem="{Binding SelectedAdditionalWurmDataLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,2">
+                                            <TextBlock FontWeight="SemiBold" Text="Manual folder" />
+                                            <TextBlock Foreground="#FF5F6368" FontSize="11" Text="{Binding}"
+                                                       TextTrimming="CharacterEllipsis" ToolTip="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                                <Button Content="Add folder" Click="OnAddFolderClick" />
+                                <Button Margin="8,0,0,0" Content="Remove" Focusable="False"
+                                        IsEnabled="{Binding CanRemoveAdditionalWurmDataLocation}"
+                                        Click="OnRemoveFolderClick" />
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+                <GroupBox Header="Discovery results" Margin="0,0,0,12" Padding="12"
+                          Background="#FFF7F8FA" BorderBrush="#FFD5DBE1" BorderThickness="1"
+                          FontWeight="SemiBold">
+                    <StackPanel TextElement.FontWeight="Normal">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Find locations" IsEnabled="{Binding CanFindLocations}" Click="OnFindLocationsClick" />
+                            <TextBlock Margin="8,3,0,0" Foreground="#FF5F6368"
+                                       Text="{Binding LocationDiscoveryStatusText}" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center"><TextBlock HorizontalAlignment="Center" FontWeight="SemiBold" Text="{Binding DiscoveryRootCount}" /><TextBlock Foreground="#FF5F6368" FontSize="10" Text="Roots" /></StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center"><TextBlock HorizontalAlignment="Center" FontWeight="SemiBold" Text="{Binding DiscoveryProfileCount}" /><TextBlock Foreground="#FF5F6368" FontSize="10" Text="Profiles" /></StackPanel>
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center"><TextBlock HorizontalAlignment="Center" FontWeight="SemiBold" Text="{Binding DiscoveryEventFileCount}" /><TextBlock Foreground="#FF5F6368" FontSize="10" Text="Event" /></StackPanel>
+                            <StackPanel Grid.Column="3" HorizontalAlignment="Center"><TextBlock HorizontalAlignment="Center" FontWeight="SemiBold" Text="{Binding DiscoverySkillsFileCount}" /><TextBlock Foreground="#FF5F6368" FontSize="10" Text="Skills" /></StackPanel>
+                        </Grid>
+                        <ItemsControl Margin="0,10,0,0" ItemsSource="{Binding DiscoveredRoots}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Expander Margin="0,0,0,6">
+                                        <Expander.Header>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                    <TextBlock FontWeight="SemiBold" Text="{Binding SourceSummary}" TextTrimming="CharacterEllipsis" />
+                                                    <TextBlock FontSize="11" Foreground="#FF5F6368" Text="{Binding PlayersDirectoryPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding PlayersDirectoryPath}" />
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding ProfileCount, StringFormat=Profiles: {0}}" />
+                                                <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding EventFileCount, StringFormat=Event: {0}}" />
+                                                <TextBlock Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding SkillsFileCount, StringFormat=Skills: {0}}" />
+                                            </Grid>
+                                        </Expander.Header>
+                                        <StackPanel Margin="20,6,0,4">
+                                            <Grid Margin="0,0,0,3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Foreground="#FF5F6368" Text="Profile" />
+                                                <TextBlock Grid.Column="1" Foreground="#FF5F6368" HorizontalAlignment="Right" Text="Event" />
+                                                <TextBlock Grid.Column="2" Foreground="#FF5F6368" HorizontalAlignment="Right" Text="Skills" />
+                                            </Grid>
+                                            <ItemsControl Margin="0,2,0,0" ItemsSource="{Binding Profiles}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,2,0,2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="80" />
+                                                                <ColumnDefinition Width="80" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="{Binding ProfileName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ProfileName}" />
+                                                            <TextBlock Grid.Column="1" Foreground="#FF5F6368" HorizontalAlignment="Right" Text="{Binding EventFileCount}" />
+                                                            <TextBlock Grid.Column="2" Foreground="#FF5F6368" HorizontalAlignment="Right" Text="{Binding SkillsFileCount}" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding Origins}">
+                                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock FontSize="11" Foreground="#FF5F6368" Text="{Binding InputPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding InputPath}" /></DataTemplate></ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Expander>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </GroupBox>
+                <Expander Padding="12" Background="#FFF7F8FA" BorderBrush="#FFD5DBE1" BorderThickness="1" FontWeight="SemiBold" IsExpanded="False">
+                    <Expander.Header>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Text="Diagnostics" />
+                            <TextBlock Margin="8,0,0,0" FontWeight="Normal" Foreground="#FF5F6368" Text="{Binding DiscoveryDiagnosticSummaryText}" />
+                        </DockPanel>
+                    </Expander.Header>
+                    <ItemsControl ItemsSource="{Binding LocationDiscoveryDiagnostics}">
+                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Margin="0,2,0,0" Foreground="#FFC5221F" FontWeight="Normal" Text="{Binding}" TextWrapping="Wrap" /></DataTemplate></ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
